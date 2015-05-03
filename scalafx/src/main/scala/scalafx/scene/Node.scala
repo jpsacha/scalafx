@@ -43,6 +43,7 @@ import scalafx.geometry.Point2D._
 import scalafx.geometry.{Bounds, Insets, Point2D, Point3D, Pos, _}
 import scalafx.scene.effect.{BlendMode, Effect}
 import scalafx.scene.image.WritableImage
+import scalafx.scene.input._
 import scalafx.scene.layout.Priority
 import scalafx.scene.transform.Transform
 
@@ -335,6 +336,13 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onContextMenuRequested() = v
   }
 
+  def onContextMenuRequested_=[T >: ContextMenuEvent <: Event, U >: jfxsi.ContextMenuEvent <: jfxe.Event](handler: T => Unit)
+                                                                                                         (implicit jfx2sfx: U => T) {
+    onContextMenuRequested() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when drag gesture has been detected.
    */
@@ -342,6 +350,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onDragDetected_=(v: jfxe.EventHandler[_ >: jfxsi.MouseEvent]) {
     onDragDetected() = v
+  }
+
+  def onDragDetected_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onDragDetected() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -354,6 +368,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onDragDone() = v
   }
 
+  def onDragDone_=[T >: DragEvent <: Event, U >: jfxsi.DragEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onDragDone() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when the mouse button is released on this Node during drag
    * and drop gesture.
@@ -362,6 +382,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onDragDropped_=(v: jfxe.EventHandler[_ >: jfxsi.DragEvent]) {
     onDragDropped() = v
+  }
+
+  def onDragDropped_=[T >: DragEvent <: Event, U >: jfxsi.DragEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onDragDropped() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -373,6 +399,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onDragEntered() = v
   }
 
+  def onDragEntered_=[T >: DragEvent <: Event, U >: jfxsi.DragEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onDragEntered() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when drag gesture exits this Node.
    */
@@ -382,6 +414,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onDragExited() = v
   }
 
+  def onDragExited_=[T >: DragEvent <: Event, U >: jfxsi.DragEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onDragExited() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when drag gesture progresses within this Node.
    */
@@ -389,6 +427,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onDragOver_=(v: jfxe.EventHandler[_ >: jfxsi.DragEvent]) {
     onDragOver() = v
+  }
+
+  def onDragOver_=[T >: DragEvent <: Event, U >: jfxsi.DragEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onDragOver() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -401,6 +445,13 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onInputMethodTextChanged() = v
   }
 
+  def onInputMethodTextChanged_=[T >: InputMethodEvent <: Event, U >: jfxsi.InputMethodEvent <: jfxe.Event](handler: T => Unit)
+                                                                                                           (implicit jfx2sfx: U => T) {
+    onInputMethodTextChanged() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when this Node or its child Node has input focus and a key
    * has been pressed.
@@ -409,6 +460,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onKeyPressed_=(v: jfxe.EventHandler[_ >: jfxsi.KeyEvent]) {
     onKeyPressed() = v
+  }
+
+  def onKeyPressed_=[T >: KeyEvent <: Event, U >: jfxsi.KeyEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onKeyPressed() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -421,6 +478,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onKeyReleased() = v
   }
 
+  def onKeyReleased_=[T >: KeyEvent <: Event, U >: jfxsi.KeyEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onKeyReleased() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when this Node or its child Node has input focus and a key
    * has been typed.
@@ -429,6 +492,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onKeyTyped_=(v: jfxe.EventHandler[_ >: jfxsi.KeyEvent]) {
     onKeyTyped() = v
+  }
+
+  def onKeyTyped_=[T >: KeyEvent <: Event, U >: jfxsi.KeyEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onKeyTyped() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -441,6 +510,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMouseClicked() = v
   }
 
+  def onMouseClicked_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMouseClicked() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when a mouse button is pressed on this Node and then dragged.
    */
@@ -448,6 +523,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onMouseDragged_=(v: jfxe.EventHandler[_ >: jfxsi.MouseEvent]) {
     onMouseDragged() = v
+  }
+
+  def onMouseDragged_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMouseDragged() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -459,6 +540,13 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMouseDragEntered() = v
   }
 
+  def onMouseDragEntered_=[T >: MouseDragEvent <: Event, U >: jfxsi.MouseDragEvent <: jfxe.Event](handler: T => Unit)
+                                                                                                 (implicit jfx2sfx: U => T) {
+    onMouseDragEntered() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when a full press-drag-release gesture leaves this Node.
    */
@@ -468,6 +556,13 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMouseDragExited() = v
   }
 
+  def onMouseDragExited_=[T >: MouseDragEvent <: Event, U >: jfxsi.MouseDragEvent <: jfxe.Event](handler: T => Unit)
+                                                                                                (implicit jfx2sfx: U => T) {
+    onMouseDragExited() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when a full press-drag-release gesture progresses within this Node.
    */
@@ -475,6 +570,13 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onMouseDragOver_=(v: jfxe.EventHandler[_ >: jfxsi.MouseDragEvent]) {
     onMouseDragOver() = v
+  }
+
+  def onMouseDragOver_=[T >: MouseDragEvent <: Event, U >: jfxsi.MouseDragEvent <: jfxe.Event](handler: T => Unit)
+                                                                                              (implicit jfx2sfx: U => T) {
+    onMouseDragOver() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -487,6 +589,13 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMouseDragReleased() = v
   }
 
+  def onMouseDragReleased_=[T >: MouseDragEvent <: Event, U >: jfxsi.MouseDragEvent <: jfxe.Event](handler: T => Unit)
+                                                                                                  (implicit jfx2sfx: U => T) {
+    onMouseDragReleased() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when the mouse enters this Node.
    */
@@ -494,6 +603,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onMouseEntered_=(v: jfxe.EventHandler[_ >: jfxsi.MouseEvent]) {
     onMouseEntered() = v
+  }
+
+  def onMouseEntered_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMouseEntered() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -505,10 +620,22 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMouseExited() = v
   }
 
+  def onMouseExited_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMouseExited() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   def onMouseMoved = delegate.onMouseMovedProperty
 
   def onMouseMoved_=(v: jfxe.EventHandler[_ >: jfxsi.MouseEvent]) {
     onMouseMoved() = v
+  }
+
+  def onMouseMoved_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMouseMoved() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -520,6 +647,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMousePressed() = v
   }
 
+  def onMousePressed_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMousePressed() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when a mouse button has been released on this Node.
    */
@@ -529,6 +662,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
     onMouseReleased() = v
   }
 
+  def onMouseReleased_=[T >: MouseEvent <: Event, U >: jfxsi.MouseEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onMouseReleased() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
+
   /**
    * Defines a function to be called when user performs a scrolling action.
    */
@@ -536,6 +675,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
 
   def onScroll_=(v: jfxe.EventHandler[_ >: jfxsi.ScrollEvent]) {
     onScroll() = v
+  }
+
+  def onScroll_=[T >: ScrollEvent <: Event, U >: jfxsi.ScrollEvent <: jfxe.Event](handler: T => Unit)(implicit jfx2sfx: U => T) {
+    onScroll() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1053,8 +1198,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onRotate = delegate.onRotateProperty
-  def onRotate_=(v: jfxe.EventHandler[jfxsi.RotateEvent]) {
+  def onRotate_=(v: jfxe.EventHandler[_ >:jfxsi.RotateEvent]) {
     onRotate() = v
+  }
+  def onRotate_=[T >: RotateEvent <: Event, U >: jfxsi.RotateEvent <: jfxe.Event](handler: T => Unit)
+                                                                                 (implicit jfx2sfx: U => T) {
+    onRotate() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1063,8 +1214,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onRotationFinished = delegate.onRotationFinishedProperty()
-  def onRotationFinished_=(v: jfxe.EventHandler[jfxsi.RotateEvent]) {
+  def onRotationFinished_=(v: jfxe.EventHandler[_ >: jfxsi.RotateEvent]) {
     onRotationFinished() = v
+  }
+  def onRotationFinished_=[T >: RotateEvent <: Event, U >: jfxsi.RotateEvent <: jfxe.Event](handler: T => Unit)
+                                                                                           (implicit jfx2sfx: U => T) {
+    onRotationFinished() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1073,8 +1230,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onRotationStarted = delegate.onRotationFinishedProperty()
-  def onRotationStarted_=(v: jfxe.EventHandler[jfxsi.RotateEvent]) {
+  def onRotationStarted_=(v: jfxe.EventHandler[_ >: jfxsi.RotateEvent]) {
     onRotationStarted() = v
+  }
+  def onRotationStarted_=[T >: RotateEvent <: Event, U >: jfxsi.RotateEvent <: jfxe.Event](handler: T => Unit)
+                                                                                          (implicit jfx2sfx: U => T) {
+    onRotationStarted() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1083,8 +1246,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onScrollFinished = delegate.onScrollFinishedProperty()
-  def onScrollFinished_=(v: jfxe.EventHandler[jfxsi.ScrollEvent]) {
+  def onScrollFinished_=(v: jfxe.EventHandler[_ >: jfxsi.ScrollEvent]) {
     onScrollFinished() = v
+  }
+  def onScrollFinished_=[T >: ScrollEvent <: Event, U >: jfxsi.ScrollEvent <: jfxe.Event](handler: T => Unit)
+                                                                                         (implicit jfx2sfx: U => T) {
+    onScrollFinished() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1093,8 +1262,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onScrollStarted = delegate.onScrollStartedProperty()
-  def onScrollStarted_=(v: jfxe.EventHandler[jfxsi.ScrollEvent]) {
+  def onScrollStarted_=(v: jfxe.EventHandler[_ >: jfxsi.ScrollEvent]) {
     onScrollStarted() = v
+  }
+  def onScrollStarted_=[T >: ScrollEvent <: Event, U >: jfxsi.ScrollEvent <: jfxe.Event](handler: T => Unit)
+                                                                                        (implicit jfx2sfx: U => T) {
+    onScrollStarted() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1103,8 +1278,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onSwipeDown = delegate.onSwipeDownProperty()
-  def onSwipeDown_=(v: jfxe.EventHandler[jfxsi.SwipeEvent]) {
+  def onSwipeDown_=(v: jfxe.EventHandler[_ >: jfxsi.SwipeEvent]) {
     onSwipeDown() = v
+  }
+  def onSwipeDown_=[T >: SwipeEvent <: Event, U >: jfxsi.SwipeEvent <: jfxe.Event](handler: T => Unit)
+                                                                                  (implicit jfx2sfx: U => T) {
+    onSwipeDown() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1113,8 +1294,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onSwipeLeft = delegate.onSwipeLeftProperty()
-  def onSwipeLeft_=(v: jfxe.EventHandler[jfxsi.SwipeEvent]) {
+  def onSwipeLeft_=(v: jfxe.EventHandler[_ >: jfxsi.SwipeEvent]) {
     onSwipeLeft() = v
+  }
+  def onSwipeLeft_=[T >: SwipeEvent <: Event, U >: jfxsi.SwipeEvent <: jfxe.Event](handler: T => Unit)
+                                                                                  (implicit jfx2sfx: U => T) {
+    onSwipeLeft() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1123,8 +1310,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onSwipeUp = delegate.onSwipeUpProperty()
-  def onSwipeUp_=(v: jfxe.EventHandler[jfxsi.SwipeEvent]) {
+  def onSwipeUp_=(v: jfxe.EventHandler[_ >: jfxsi.SwipeEvent]) {
     onSwipeUp() = v
+  }
+  def onSwipeUp_=[T >: SwipeEvent <: Event, U >: jfxsi.SwipeEvent <: jfxe.Event](handler: T => Unit)
+                                                                                (implicit jfx2sfx: U => T) {
+    onSwipeUp() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1133,8 +1326,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onSwipeRight = delegate.onSwipeRightProperty()
-  def onSwipeRight_=(v: jfxe.EventHandler[jfxsi.SwipeEvent]) {
+  def onSwipeRight_=(v: jfxe.EventHandler[_ >: jfxsi.SwipeEvent]) {
     onSwipeRight() = v
+  }
+  def onSwipeRight_=[T >: SwipeEvent <: Event, U >: jfxsi.SwipeEvent <: jfxe.Event](handler: T => Unit)
+                                                                                   (implicit jfx2sfx: U => T) {
+    onSwipeRight() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1143,8 +1342,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onZoom = delegate.onZoomProperty()
-  def onZoom_=(v: jfxe.EventHandler[jfxsi.ZoomEvent]) {
+  def onZoom_=(v: jfxe.EventHandler[_ >: jfxsi.ZoomEvent]) {
     onZoom() = v
+  }
+  def onZoom_=[T >: ZoomEvent <: Event, U >: jfxsi.ZoomEvent <: jfxe.Event](handler: T => Unit)
+                                                                           (implicit jfx2sfx: U => T) {
+    onZoom() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1156,6 +1361,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
   def onZoomFinished_=(v: jfxe.EventHandler[jfxsi.ZoomEvent]) {
     onZoomFinished() = v
   }
+  def onZoomFinished_=[T >: ZoomEvent <: Event, U >: jfxsi.ZoomEvent <: jfxe.Event](handler: T => Unit)
+                                                                                   (implicit jfx2sfx: U => T) {
+    onZoomFinished() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
 
   /**
    * Defines a function to be called when a Zoom gesture starts.
@@ -1166,6 +1377,12 @@ abstract class Node protected(override val delegate: jfxs.Node)
   def onZoomStarted_=(v: jfxe.EventHandler[jfxsi.ZoomEvent]) {
     onZoomStarted() = v
   }
+  def onZoomStarted_=[T >: ZoomEvent <: Event, U >: jfxsi.ZoomEvent <: jfxe.Event](handler: T => Unit)
+                                                                                  (implicit jfx2sfx: U => T) {
+    onZoomStarted() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
+  }
 
   /**
    * Defines a function to be called when user performs a Touch Moved action.
@@ -1173,8 +1390,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onTouchMoved = delegate.onTouchMovedProperty()
-  def onTouchMoved_=(v: jfxe.EventHandler[jfxsi.TouchEvent]) {
+  def onTouchMoved_=(v: jfxe.EventHandler[_ >: jfxsi.TouchEvent]) {
     onTouchMoved() = v
+  }
+  def onTouchMoved_=[T >: TouchEvent <: Event, U >: jfxsi.TouchEvent <: jfxe.Event](handler: T => Unit)
+                                                                                   (implicit jfx2sfx: U => T) {
+    onTouchMoved() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1183,8 +1406,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onTouchPressed = delegate.onTouchPressedProperty()
-  def onTouchPressed_=(v: jfxe.EventHandler[jfxsi.TouchEvent]) {
+  def onTouchPressed_=(v: jfxe.EventHandler[_ >: jfxsi.TouchEvent]) {
     onTouchPressed() = v
+  }
+  def onTouchPressed_=[T >: TouchEvent <: Event, U >: jfxsi.TouchEvent <: jfxe.Event](handler: T => Unit)
+                                                                                     (implicit jfx2sfx: U => T) {
+    onTouchPressed() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1193,8 +1422,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onTouchReleased = delegate.onTouchReleasedProperty()
-  def onTouchReleased_=(v: jfxe.EventHandler[jfxsi.TouchEvent]) {
+  def onTouchReleased_=(v: jfxe.EventHandler[_ >: jfxsi.TouchEvent]) {
     onTouchReleased() = v
+  }
+  def onTouchReleased_=[T >: TouchEvent <: Event, U >: jfxsi.TouchEvent <: jfxe.Event](handler: T => Unit)
+                                                                                      (implicit jfx2sfx: U => T) {
+    onTouchReleased() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   /**
@@ -1203,8 +1438,14 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @since 2.2
    */
   def onTouchStationary = delegate.onTouchStationaryProperty()
-  def onTouchStationary_=(v: jfxe.EventHandler[jfxsi.TouchEvent]) {
+  def onTouchStationary_=(v: jfxe.EventHandler[_ >: jfxsi.TouchEvent]) {
     onTouchStationary() = v
+  }
+  def onTouchStationary_=[T >: TouchEvent <: Event, U >: jfxsi.TouchEvent <: jfxe.Event](handler: T => Unit)
+                                                                                        (implicit jfx2sfx: U => T) {
+    onTouchStationary() = new jfxe.EventHandler[U] {
+      override def handle(event: U): Unit = handler(event)
+    }
   }
 
   override protected def eventHandlerDelegate = delegate.asInstanceOf[EventHandled]
