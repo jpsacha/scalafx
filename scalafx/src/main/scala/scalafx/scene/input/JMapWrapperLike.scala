@@ -24,52 +24,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package scalafx
 
-import scalafx.Includes._
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene.Scene
-import scalafx.scene.control._
-import scalafx.scene.layout._
-import scalafx.scene.paint.Color
-import scalafx.scene.web._
+package scalafx.scene.input
 
-object WebDemo extends JFXApp {
+import java.{util => ju}
 
-  val browser = new WebView {
-    hgrow = Priority.Always
-    vgrow = Priority.Always
-    onAlert = (e: WebEvent[_]) => println("onAlert: " + e)
-    onStatusChanged = (e: WebEvent[_]) => println("onStatusChanged: " + e)
-    onResized = (e: WebEvent[_]) => println("onResized: " + e)
-    onVisibilityChanged = (e: WebEvent[_]) => println("onVisibilityChanged: " + e)
+import scala.collection.{Iterator, mutable}
+
+private[input] trait JMapWrapperLike[A, B, +Repr <: mutable.MapLike[A, B, Repr]
+  with mutable.Map[A, B]]
+  extends mutable.Map[A, B]
+  with mutable.MapLike[A, B, Repr] {
+
+  def underlying: ju.Map[A, B]
+
+  override def size = underlying.size
+
+  def get(k: A) = {
+    val v = underlying get k
+    if (v != null)
+      Some(v)
+    else if (underlying containsKey k)
+      Some(null.asInstanceOf[B])
+    else
+      None
   }
 
+  def +=(kv: (A, B)): this.type = { underlying.put(kv._1, kv._2); this }
+  def -=(key: A): this.type = { underlying remove key; this }
 
-  val engine = browser.engine
-  engine.load("http://www.scalafx.org/")
-
-  val txfUrl = new TextField {
-    text = engine.location.value
-    hgrow = Priority.Always
-    vgrow = Priority.Never
-  }
-  txfUrl.onAction = { actionEvent => engine.load(txfUrl.text.get)}
-
-  stage = new PrimaryStage {
-    title = "ScalaFX Web Demo"
-    width = 800
-    height = 600
-    scene = new Scene {
-      fill = Color.LightGray
-      root = new BorderPane {
-        hgrow = Priority.Always
-        vgrow = Priority.Always
-        top = txfUrl
-        center = browser
-      }
-    }
+  override def put(k: A, v: B): Option[B] = {
+    val r = underlying.put(k, v)
+    if (r != null) Some(r) else None
   }
 
+  override def update(k: A, v: B) { underlying.put(k, v) }
+
+  override def remove(k: A): Option[B] = {
+    val r = underlying remove k
+    if (r != null) Some(r) else None
+  }
+
+  //  def iterator: Iterator[(A, B)] = new AbstractIterator[(A, B)] {
+  def iterator: Iterator[(A, B)] = new Iterator[(A, B)] {
+    val ui = underlying.entrySet.iterator
+    def hasNext = ui.hasNext
+    def next() = { val e = ui.next(); (e.getKey, e.getValue) }
+  }
+
+  override def clear() = underlying.clear()
+
+  override def empty: Repr = null.asInstanceOf[Repr]
 }

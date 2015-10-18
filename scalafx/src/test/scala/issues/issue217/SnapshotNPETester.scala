@@ -24,52 +24,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package scalafx
 
-import scalafx.Includes._
+package issues.issue217
+
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene.Scene
-import scalafx.scene.control._
-import scalafx.scene.layout._
-import scalafx.scene.paint.Color
-import scalafx.scene.web._
+import scalafx.geometry.Rectangle2D
+import scalafx.scene._
+import scalafx.scene.image.WritableImage
+import scalafx.scene.layout.BorderPane
+import scalafx.scene.media.{Media, MediaPlayer, MediaView}
 
-object WebDemo extends JFXApp {
+/**
+  * Illustration ofd Issue 217. Originallu reported on ScalaFX Users
+  * [[https://groups.google.com/forum/#!topic/scalafx-users/-NWgd40U_W0 snapshot problem after upgrade to scalafx 8.0.60-R9]]
+  */
+object SnapshotNPETester extends JFXApp {
+  val movie     = "http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv"
+  val mediaView = new MediaView(new MediaPlayer(new Media(movie)) {autoPlay.value = true})
 
-  val browser = new WebView {
-    hgrow = Priority.Always
-    vgrow = Priority.Always
-    onAlert = (e: WebEvent[_]) => println("onAlert: " + e)
-    onStatusChanged = (e: WebEvent[_]) => println("onStatusChanged: " + e)
-    onResized = (e: WebEvent[_]) => println("onResized: " + e)
-    onVisibilityChanged = (e: WebEvent[_]) => println("onVisibilityChanged: " + e)
-  }
-
-
-  val engine = browser.engine
-  engine.load("http://www.scalafx.org/")
-
-  val txfUrl = new TextField {
-    text = engine.location.value
-    hgrow = Priority.Always
-    vgrow = Priority.Never
-  }
-  txfUrl.onAction = { actionEvent => engine.load(txfUrl.text.get)}
+  test(mediaView)
 
   stage = new PrimaryStage {
-    title = "ScalaFX Web Demo"
-    width = 800
-    height = 600
-    scene = new Scene {
-      fill = Color.LightGray
-      root = new BorderPane {
-        hgrow = Priority.Always
-        vgrow = Priority.Always
-        top = txfUrl
-        center = browser
-      }
+    width = 500
+    height = 300
+    scene = new Scene(0, 0, true, SceneAntialiasing.Balanced) {
+      camera = new PerspectiveCamera
+      root = new BorderPane {center = mediaView}
     }
+  }
+
+  def test(mediaNode: Node) = {
+    val param = new SnapshotParameters {viewport = new Rectangle2D(0, 0, 200, 200)}
+    // This call was resulting in NPE - Issue #217.
+    val textureImage: WritableImage = mediaNode.snapshot(param, null)
   }
 
 }

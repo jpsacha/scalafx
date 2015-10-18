@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2014, ScalaFX Project
+ * Copyright (c) 2011-2015, ScalaFX Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@
 package scalafx.scene
 
 import javafx.scene.{effect => jfxse, input => jfxsi, layout => jfxsl, transform => jfxst}
+import javafx.util.Callback
 import javafx.{event => jfxe, geometry => jfxg, scene => jfxs, util => jfxu}
 
 import scala.language.implicitConversions
@@ -36,6 +37,7 @@ import scalafx.beans.property._
 import scalafx.collections._
 import scalafx.css.Styleable
 import scalafx.delegate.SFXDelegate
+import scalafx.delegate.SFXDelegate.delegateOrNull
 import scalafx.event.Event._
 import scalafx.event.{Event, EventHandlerDelegate}
 import scalafx.geometry.Bounds._
@@ -876,9 +878,9 @@ abstract class Node protected(override val delegate: jfxs.Node)
    */
   def alignmentInParent_=(p: Pos) {
     val delegateProperties = delegate.getProperties
-    delegateProperties("alignment") = p.delegate
-    delegateProperties("halignment") = p.hpos.delegate
-    delegateProperties("valignment") = p.vpos.delegate
+    delegateProperties.put("alignment", delegateOrNull(p))
+    delegateProperties("halignment") = if (p != null) p.hpos.delegate else null
+    delegateProperties("valignment") = if (p != null) p.vpos.delegate else null
     // for compatibility with layouts, which all use different keys
     jfxsl.BorderPane.setAlignment(delegate, p)
     jfxsl.GridPane.setHalignment(delegate, p.hpos)
@@ -903,7 +905,7 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @param i The margin of space around this Node inside its parent.
    */
   def margin_=(i: Insets) {
-    delegate.getProperties.put("margin", i.delegate)
+    delegate.getProperties.put("margin", delegateOrNull(i))
     // for compatibility with layouts, which all use different keys
     jfxsl.BorderPane.setMargin(delegate, i)
     jfxsl.FlowPane.setMargin(delegate, i)
@@ -930,7 +932,7 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @param p the horizontal grow priority for this Node
    */
   def hgrow_=(p: Priority) {
-    delegate.getProperties("hgrow") = p.delegate
+    delegate.getProperties("hgrow") = delegateOrNull(p)
     // for compatibility with layouts, which all use different keys
     jfxsl.GridPane.setHgrow(delegate, p)
     jfxsl.HBox.setHgrow(delegate, p)
@@ -952,7 +954,7 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * @param p the vertical grow priority for this Node
    */
   def vgrow_=(p: Priority) {
-    delegate.getProperties("vgrow") = p.delegate
+    delegate.getProperties("vgrow") = delegateOrNull(p)
     // for compatibility with layouts, which all use different keys
     jfxsl.GridPane.setVgrow(delegate, p)
     jfxsl.VBox.setVgrow(delegate, p)
@@ -1139,13 +1141,20 @@ abstract class Node protected(override val delegate: jfxs.Node)
    * Takes a snapshot of this node and returns the rendered image when it is ready.
    */
   def snapshot(params: SnapshotParameters, image: WritableImage): WritableImage =
-    delegate.snapshot(params, image)
+    delegate.snapshot(delegateOrNull(params), delegateOrNull(image))
 
   /**
    * Takes a snapshot of this node at the next frame and calls the specified callback method when the image is ready.
+   * Arguments `params` and `image` can be null.
    */
-  def snapshot(callback: jfxs.SnapshotResult => Unit, params: SnapshotParameters, image: WritableImage) {
-    delegate.snapshot(callback, params, image)
+  def snapshot(callback: SnapshotResult => Unit, params: SnapshotParameters, image: WritableImage) {
+    val jfxCallback = new Callback[jfxs.SnapshotResult, java.lang.Void] {
+      override def call(result: jfxs.SnapshotResult): java.lang.Void = {
+        callback(new SnapshotResult(result))
+        null
+      }
+    }
+    delegate.snapshot(jfxCallback, params, image)
   }
 
   /**
@@ -1181,7 +1190,7 @@ abstract class Node protected(override val delegate: jfxs.Node)
    *
    * @since 2.2
    */
-  def localToParentTransform: Transform = delegate.localToParentTransform
+  def localToParentTransform: Transform = delegate.getLocalToParentTransform
 
   /**
    * An affine transform that holds the computed local-to-scene transform.
@@ -1190,7 +1199,7 @@ abstract class Node protected(override val delegate: jfxs.Node)
    *
    * @since 2.2
    */
-  def localToSceneTransform: Transform = delegate.localToSceneTransform
+  def localToSceneTransform: Transform = delegate.getLocalToSceneTransform
 
   /**
    * Defines a function to be called when user performs a rotation action.

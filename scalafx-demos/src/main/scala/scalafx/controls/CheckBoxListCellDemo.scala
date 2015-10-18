@@ -24,52 +24,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package scalafx
 
+package scalafx.controls
+
+import scala.language.implicitConversions
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.beans.property.BooleanProperty
+import scalafx.collections.ObservableBuffer
 import scalafx.scene.Scene
-import scalafx.scene.control._
-import scalafx.scene.layout._
-import scalafx.scene.paint.Color
-import scalafx.scene.web._
+import scalafx.scene.control.cell.CheckBoxListCell
+import scalafx.scene.control.{Button, ListView}
+import scalafx.scene.layout.VBox
 
-object WebDemo extends JFXApp {
+/**
+ * Example of using `CheckBoxListCell` in `ListView`.
+ */
+object CheckBoxListCellDemo extends JFXApp {
 
-  val browser = new WebView {
-    hgrow = Priority.Always
-    vgrow = Priority.Always
-    onAlert = (e: WebEvent[_]) => println("onAlert: " + e)
-    onStatusChanged = (e: WebEvent[_]) => println("onStatusChanged: " + e)
-    onResized = (e: WebEvent[_]) => println("onResized: " + e)
-    onVisibilityChanged = (e: WebEvent[_]) => println("onVisibilityChanged: " + e)
+  class Item(initialSelection: Boolean, val name: String) {
+    val selected = BooleanProperty(initialSelection)
+    override def toString = name
   }
 
-
-  val engine = browser.engine
-  engine.load("http://www.scalafx.org/")
-
-  val txfUrl = new TextField {
-    text = engine.location.value
-    hgrow = Priority.Always
-    vgrow = Priority.Never
-  }
-  txfUrl.onAction = { actionEvent => engine.load(txfUrl.text.get)}
+  val data = ObservableBuffer[Item](
+    (1 to 10).map { i => new Item(i % 2 == 0, s"Item $i") }
+  )
 
   stage = new PrimaryStage {
-    title = "ScalaFX Web Demo"
-    width = 800
-    height = 600
     scene = new Scene {
-      fill = Color.LightGray
-      root = new BorderPane {
-        hgrow = Priority.Always
-        vgrow = Priority.Always
-        top = txfUrl
-        center = browser
+      title = "CheckBoxListCell Demo"
+      root = new VBox {
+        children = Seq(
+          new ListView[Item] {
+            prefHeight = 250
+            items = data
+            cellFactory = CheckBoxListCell.forListView(_.selected)
+          },
+          new Button("Print State ") {
+            onAction = handle {
+              println("-------------")
+              println(data.map(d => d.name + ": " + d.selected()).mkString("\n"))
+            }
+          }
+        )
       }
     }
   }
-
 }

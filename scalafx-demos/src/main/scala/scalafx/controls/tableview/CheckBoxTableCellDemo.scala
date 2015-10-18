@@ -24,52 +24,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package scalafx
 
+package scalafx.controls.tableview
+
+import javafx.scene.control.cell.PropertyValueFactory
+
+import scala.language.implicitConversions
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.beans.property.{BooleanProperty, StringProperty}
+import scalafx.beans.value.ObservableValue
+import scalafx.collections.ObservableBuffer
 import scalafx.scene.Scene
-import scalafx.scene.control._
-import scalafx.scene.layout._
-import scalafx.scene.paint.Color
-import scalafx.scene.web._
+import scalafx.scene.control.TableColumn._
+import scalafx.scene.control.cell.CheckBoxTableCell
+import scalafx.scene.control.{TableColumn, TableView}
 
-object WebDemo extends JFXApp {
+/**
+ * Example of using `CheckBoxTableCell` in `TableView`.
+ */
+object CheckBoxTableCellDemo extends JFXApp {
 
-  val browser = new WebView {
-    hgrow = Priority.Always
-    vgrow = Priority.Always
-    onAlert = (e: WebEvent[_]) => println("onAlert: " + e)
-    onStatusChanged = (e: WebEvent[_]) => println("onStatusChanged: " + e)
-    onResized = (e: WebEvent[_]) => println("onResized: " + e)
-    onVisibilityChanged = (e: WebEvent[_]) => println("onVisibilityChanged: " + e)
+  class Item(selected_ : Boolean, name_ : String) {
+    val selected = new BooleanProperty(this, "selected", selected_)
+    val name = new StringProperty(this, "name", name_)
   }
 
+  val data = ObservableBuffer[Item](
+    (1 to 10).map { i => new Item(i % 2 == 0, s"Item $i") }
+  )
 
-  val engine = browser.engine
-  engine.load("http://www.scalafx.org/")
-
-  val txfUrl = new TextField {
-    text = engine.location.value
-    hgrow = Priority.Always
-    vgrow = Priority.Never
-  }
-  txfUrl.onAction = { actionEvent => engine.load(txfUrl.text.get)}
+  val propertyValueFactory = new PropertyValueFactory("selected")
 
   stage = new PrimaryStage {
-    title = "ScalaFX Web Demo"
-    width = 800
-    height = 600
+    title = "Example of a Table View with Check Boxes"
     scene = new Scene {
-      fill = Color.LightGray
-      root = new BorderPane {
-        hgrow = Priority.Always
-        vgrow = Priority.Always
-        top = txfUrl
-        center = browser
+      content = new TableView[Item](data) {
+        columns ++= List(
+          new TableColumn[Item, java.lang.Boolean] {
+            text = "Selected"
+            // We need to explicitly cast `_.value.selected` to modify boolean type parameters.
+            // `scala.Boolean` type is different from `java.lang.Boolean`, but eventually represented the same way
+            // by the compiler.
+            cellValueFactory = _.value.selected.asInstanceOf[ObservableValue[java.lang.Boolean, java.lang.Boolean]]
+            cellFactory = CheckBoxTableCell.forTableColumn(this)
+            editable = true
+            prefWidth = 180
+          },
+          new TableColumn[Item, String] {
+            text = "Name"
+            cellValueFactory = {_.value.name}
+            prefWidth = 180
+          }
+        )
+        editable = true
       }
     }
   }
-
 }
