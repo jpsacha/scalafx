@@ -88,7 +88,7 @@ object TextFormatterWithChangeFilterDemo extends JFXApp {
   val textField = new TextField {
     text = prompt
     textFormatter = formatter
-    onAction = (a: ActionEvent) => {
+    onAction = _ => {
       val str = text()
       val message = converter.fromString(str) + "\n"
       outputTextArea.text = message + outputTextArea.text()

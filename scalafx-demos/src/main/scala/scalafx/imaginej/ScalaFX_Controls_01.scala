@@ -83,12 +83,12 @@ object ScalaFX_Controls_01 extends JFXApp {
     translateY = 50
     prefWidth = 100
     onMouseEntered = {
-      (_: MouseEvent) =>
+      _ =>
         scaleX = 1.5
         scaleY = 1.5
     }
     onMouseExited = {
-      (_: MouseEvent) =>
+      _ =>
         scaleX = 1
         scaleY = 1
     }

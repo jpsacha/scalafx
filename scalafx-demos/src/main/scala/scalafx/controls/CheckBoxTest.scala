@@ -76,7 +76,7 @@ class CheckBoxControls(check: CheckBox) extends PropertiesNodes[CheckBox](check,
   val lblSelected = new Label {
     text = check.selected().toString
   }
-  check.onAction = (event: ActionEvent) => {
+  check.onAction = _ => {
     lblSelected.text = if (check.indeterminate()) "Indeterminate" else check.selected().toString
   }
 
@@ -88,7 +88,7 @@ class CheckBoxControls(check: CheckBox) extends PropertiesNodes[CheckBox](check,
 
   val btnFire = new Button {
     text = "Fire!"
-    onAction = { actionEvent => check.fire() }
+    onAction = { _ => check.fire() }
   }
 
   val txfText = new TextField {

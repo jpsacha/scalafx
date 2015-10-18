@@ -100,7 +100,7 @@ object PickingDemo extends JFXApp {
 
     group.transforms = Seq(yRotate)
 
-    scene.onMousePressed = (event: MouseEvent) => {
+    scene.onMousePressed = event => {
       anchorAngleY = angleY()
       anchorX = event.sceneX
 
@@ -117,7 +117,7 @@ object PickingDemo extends JFXApp {
       }
     }
 
-    scene.onMouseDragged = (event: MouseEvent) => {
+    scene.onMouseDragged = event => {
       angleY() = anchorAngleY + anchorX - event.sceneX
     }
 

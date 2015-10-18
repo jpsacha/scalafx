@@ -78,7 +78,7 @@ object ChangeFillExample extends JFXApp {
           alignmentInParent = Pos.Center
           children = new Button {
             text = "Change Fill"
-            onAction = (ae: ActionEvent) => fillPaint() = if (Light == fillPaint()) Dark else Light
+            onAction =  _ => fillPaint() = if (Light == fillPaint()) Dark else Light
           }
         }
       }

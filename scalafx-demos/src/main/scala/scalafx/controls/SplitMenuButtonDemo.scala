@@ -58,7 +58,7 @@ object SplitMenuButtonDemo extends JFXApp {
           // Use varargs constructor
           new SplitMenuButton(
             new MenuItem("MenuItem C") {
-              onAction = (ae: ActionEvent) => println(ae.eventType + " occurred on Menu Item C")
+              onAction = ae => println(ae.eventType + " occurred on Menu Item C")
             },
             new MenuItem("MenuItem D"),
             new MenuItem("MenuItem E")

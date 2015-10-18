@@ -42,18 +42,18 @@ object MenuTest extends JFXApp {
   val menu = new Menu("File") {
     items = List(
       new MenuItem("Open") {
-        onAction = (ae: ActionEvent) => history.children += new Label("Selected item `Open`")
+        onAction = _ => history.children += new Label("Selected item `Open`")
       },
       new SeparatorMenuItem,
       new MenuItem("Close") {
-        onAction = (ae: ActionEvent) => history.children += new Label("Selected item `Close`")
+        onAction = _ => history.children += new Label("Selected item `Close`")
       }
     )
 
-    onShowing = { evt => printEvent("on showing") }
-    onShown = { evt => printEvent("on shown") }
-    onHiding = { evt => printEvent("on hiding") }
-    onHidden = { evt => printEvent("on hidden") }
+    onShowing = { _ => printEvent("on showing") }
+    onShown = { _ => printEvent("on shown") }
+    onHiding = { _ => printEvent("on hiding") }
+    onHidden = { _ => printEvent("on hidden") }
   }
 
   val history = new VBox()

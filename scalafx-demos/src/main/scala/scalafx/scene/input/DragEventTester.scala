@@ -52,32 +52,32 @@ object DragEventTester extends JFXApp {
   stage = new PrimaryStage {
     title = "DragEvent Tester"
     scene = new Scene(stackPane, 200, 200) {
-      onDragOver = (event: DragEvent) => {
+      onDragOver = event => {
         println("onDragOver: " + event)
         event.consume()
       }
 
-      onDragDone = (event: DragEvent) => {
+      onDragDone = event => {
         println("onDragDone: " + event)
         event.consume()
       }
 
-      onDragDropped = (event: DragEvent) => {
+      onDragDropped = event => {
         println("onDragDropped: " + event)
         event.consume()
       }
 
-      onDragEntered = (event: DragEvent) => {
+      onDragEntered = event => {
         println("onDragEntered: " + event)
         event.consume()
       }
 
-      onDragExited = (event: DragEvent) => {
+      onDragExited = event => {
         println("onDragExited: " + event)
         event.consume()
       }
 
-      onDragOver = (event: DragEvent) => {
+      onDragOver = event => {
         println("onDragOver: " + event)
         event.consume()
       }

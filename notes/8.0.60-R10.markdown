@@ -1,0 +1,54 @@
+[ScalaFX][1] 8.0.60-R9 was tested against JavaFX 8.0u60.
+This is primarily compatibility upgrade (for new JavaFX 8.0u60 API) and bug-fix release. 
+
+
+Compatibility braking changes:
+
+* [Issue #X][X]: 
+
+Ability to use simpler lambdas for event handlers. 
+In most cases it is not not necessary to explicitly provide type for lambda argument. For instance, instead of
+
+```
+button.onAction = (ae=>ActionEvent) => { println("Button pressed") }
+```
+
+now it can be written as:
+
+```
+button.onAction = _ => { println("Button pressed") }
+```
+
+or if you want to use evengt information:
+
+```
+button.onAction = e => { println("Button pressed, event: " + e) }
+```
+
+Unfortunately it was needed to remove the old construct `handle {...}`, use instead `_ => {...}` as illustrated above.
+
+
+To use ScalaFX add following to your SBT:
+
+      libraryDependencies += "org.scalafx" %% "scalafx" % "8.0.60-R9"
+
+For downloads visit [ScalaFX on Sonatype][2] or [ScalaFX Releases][3] on GitHub. 
+Please report any problems using [ScalaFX Issue Tracker][4]. 
+Please use [ScalaFX Users Group][5] to post questions. 
+
+[1]: http://scalafx.org
+[2]: http://search.maven.org/#search&#124;ga&#124;1&#124;scalafx
+[3]: https://github.com/scalafx/scalafx/releases
+[4]: https://github.com/scalafx/scalafx/issues
+[5]: https://groups.google.com/forum/#!forum/scalafx-users
+[188]: https://github.com/scalafx/scalafx/issues/188  
+[189]: https://github.com/scalafx/scalafx/issues/189
+[190]: https://github.com/scalafx/scalafx/issues/190
+[192]: https://github.com/scalafx/scalafx/issues/192
+[193]: https://github.com/scalafx/scalafx/issues/193
+[197]: https://github.com/scalafx/scalafx/issues/197
+[199]: https://github.com/scalafx/scalafx/issues/199
+[205]: https://github.com/scalafx/scalafx/issues/205
+[208]: https://github.com/scalafx/scalafx/issues/208
+[214]: https://github.com/scalafx/scalafx/issues/214
+[215]: https://github.com/scalafx/scalafx/issues/215

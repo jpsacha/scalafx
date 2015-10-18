@@ -205,11 +205,11 @@ object TriangleMeshDemo extends JFXApp {
 
     node.transforms = Seq(yRotate)
 
-    scene.onMousePressed = (event: MouseEvent) => {
+    scene.onMousePressed = event => {
       anchorX = event.sceneX
       anchorAngleY = angleY()
     }
-    scene.onMouseDragged = (event: MouseEvent) => {
+    scene.onMouseDragged = event => {
       angleY() = anchorAngleY + anchorX - event.sceneX
     }
   }

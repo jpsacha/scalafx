@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2014, ScalaFX Project
+ * Copyright (c) 2011-2015, ScalaFX Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,7 +96,7 @@ object InfiniteRecursionIssue205Tester extends JFXApp {
 
   val scrollToButton = new Button {
     text = "scrollTo(item) - #205"
-    onAction = (ae: ActionEvent) => {
+    onAction = _ => {
       // This line would cause infinite recursion before fix
       tableView.scrollTo(extraRow)
     }
@@ -105,7 +105,7 @@ object InfiniteRecursionIssue205Tester extends JFXApp {
 
   val snapshotButton = new Button {
     text = "snapshot  - #214"
-    onAction = (ae: ActionEvent) => {
+    onAction = _ => {
       def callback(result: SnapshotResult): Unit = {
         println("callback(" + result + ")")
       }

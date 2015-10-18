@@ -50,7 +50,7 @@ object SecondStageExceptionDemo extends JFXApp {
         padding = Insets(20, 20, 20, 20)
         children = new Button {
           text = "Show Dialog"
-          onAction = (ae: ActionEvent) => {
+          onAction = _ => {
             // the JavaFX stage constructor argument below was needed to prevent exceptions
             val dialogStage = new Stage {
               scene = new Scene {

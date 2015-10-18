@@ -24,6 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package scalafx
 
 import scalafx.Includes._
@@ -55,7 +56,7 @@ object WebDemo extends JFXApp {
     hgrow = Priority.Always
     vgrow = Priority.Never
   }
-  txfUrl.onAction = { actionEvent => engine.load(txfUrl.text.get)}
+  txfUrl.onAction = { _ => engine.load(txfUrl.text.get) }
 
   stage = new PrimaryStage {
     title = "ScalaFX Web Demo"

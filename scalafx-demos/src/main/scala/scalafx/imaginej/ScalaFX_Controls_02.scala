@@ -82,35 +82,32 @@ object ScalaFX_Controls_02 extends JFXApp {
     graphic = okImageView
     text = "Accept"
     style = "-fx-font: 22 arial; -fx-base: #b6e7c9;"
-    onAction = {
-      (_: ActionEvent) =>
+    onAction = { _ =>
         label.text = "Accepted"
     }
   }
 
   val okButton2 = new Button {
     text = "Accept"
-    onAction = {
-      (_: ActionEvent) =>
+    onAction = { _ =>
         label.text = "Accepted"
     }
   }
 
   val koButton1 = new Button {
     text = "Decline"
-    onAction = {
-      (_: ActionEvent) =>
+    onAction = { _ =>
         label.text = "Declined"
     }
   }
 
   koButton1 addOnMouseEnteredHandler {
-    (_: MouseEvent) =>
+    _ =>
       koButton1.effect = new DropShadow()
   }
 
   koButton1 addOnMouseExitedHandler {
-    (_: MouseEvent) =>
+    _ =>
       koButton1.effect = null
   }
 
@@ -126,8 +123,7 @@ object ScalaFX_Controls_02 extends JFXApp {
 
   val okButton3 = new Button {
     graphic = okImageView
-    onAction = {
-      (_: ActionEvent) =>
+    onAction = { _ =>
         label.text = "Accepted"
     }
   }
@@ -135,8 +131,7 @@ object ScalaFX_Controls_02 extends JFXApp {
 
   val koButton2 = new Button {
     graphic = koImageView
-    onAction = {
-      (_: ActionEvent) =>
+    onAction = { _ =>
         label.text = "Declined"
     }
   }

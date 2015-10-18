@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2014, ScalaFX Project
+ * Copyright (c) 2011-2015, ScalaFX Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ object CheckBoxTest extends JFXApp {
   val check = new CheckBox {
     text = "CheckBox"
   }
-  check.onAction = (event: ActionEvent) => {
+  check.onAction = _ => {
     lblCheckState.text = if (check.indeterminate.get) "Indeterminate" else check.selected.get().toString
   }
 
@@ -53,7 +53,7 @@ object CheckBoxTest extends JFXApp {
   val btnAllowIndeterminate = new scalafx.scene.control.Button {
     text = "Allow Indeterminate"
   }
-  btnAllowIndeterminate.onAction = (event: ActionEvent) => {
+  btnAllowIndeterminate.onAction = _ => {
     check.allowIndeterminate = !check.allowIndeterminate.get()
   }
 
@@ -64,7 +64,7 @@ object CheckBoxTest extends JFXApp {
   val btnFire = new Button {
     text = "Fire!"
   }
-  btnFire.onAction = (event: ActionEvent) => check.fire()
+  btnFire.onAction = _ => check.fire()
 
   val txfText = new TextField
   txfText.delegate.textProperty.bindBidirectional(check.text)

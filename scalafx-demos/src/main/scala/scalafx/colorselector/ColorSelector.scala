@@ -136,7 +136,7 @@ object ColorSelector extends JFXApp {
     effect = new Reflection {
       fraction = 0.45
     }
-    onMouseClicked = (event: MouseEvent) => {
+    onMouseClicked = event => {
       if ((event.getClickCount == 2) && (event.button == MouseButton.PRIMARY)) {
         randomizeColors()
       }
@@ -192,7 +192,7 @@ object ColorSelector extends JFXApp {
   val cmbWebColor = new ComboBox[WebColor](WebColor.colors) {
     promptText = "Web Color"
     converter = StringConverter.toStringConverter((wc: WebColor) => wc.name)
-    onAction = (event: ActionEvent) => webColorSelected()
+    onAction = _ => webColorSelected()
   }
 
   val txfColorValue = new TextField {
@@ -207,7 +207,7 @@ object ColorSelector extends JFXApp {
     promptText = "Color Format"
     converter = StringConverter.toStringConverter((f: Formatter) => f.description)
     value = RgbFormatter
-    onAction = (event: ActionEvent) => formatColor()
+    onAction = _ => formatColor()
   }
 
   val chbDisableAlpha = new CheckBox {

@@ -58,11 +58,11 @@ object LayerTest extends JFXApp {
 
   // Handle Layers
   // Handler for Layer 1
-  layer1.onMousePressed = (e: MouseEvent) => {
+  layer1.onMousePressed = e => {
     gc1.fillOval(e.x, e.y, 20, 20)
   }
   // Handler for Layer 2
-  layer2.onMousePressed = (e: MouseEvent) => {
+  layer2.onMousePressed = e => {
     gc2.fillOval(e.x, e.y, 20, 20)
   }
 
