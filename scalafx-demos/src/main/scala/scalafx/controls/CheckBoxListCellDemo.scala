@@ -63,7 +63,7 @@ object CheckBoxListCellDemo extends JFXApp {
             cellFactory = CheckBoxListCell.forListView(_.selected)
           },
           new Button("Print State ") {
-            onAction = handle {
+            onAction = _ => {
               println("-------------")
               println(data.map(d => d.name + ": " + d.selected()).mkString("\n"))
             }
