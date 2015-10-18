@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2014, ScalaFX Project
+ * Copyright (c) 2011-2015, ScalaFX Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,73 +31,217 @@ import javafx.{animation => jfxa, event => jfxe}
 import scala.collection.JavaConversions._
 import scala.language.implicitConversions
 import scalafx.delegate.SFXDelegate
+import scalafx.event.ActionEvent
 import scalafx.util.Duration
 
 /**
- * Companion Object for [[scalafx.animation.KeyFrame]].
- *
- * @define KF `KeyFrame`
- */
+  * Companion Object for [[scalafx.animation.KeyFrame]].
+  *
+  * @define KF `KeyFrame`
+  */
 object KeyFrame {
 
   /**
-   * Converts a ScalaFX $KF to a JavaFX [[http://docs.oracle.com/javase/8/javafx/api/javafx/animation/KeyFrame.html $KF]],
-   * extracting its delegate.
-   *
-   * @param v ScalaFX $KF
-   * @return JavaFX $KF extracted from `v`.
-   */
+    * Converts a ScalaFX $KF to a JavaFX [[http://docs.oracle.com/javase/8/javafx/api/javafx/animation/KeyFrame.html $KF]],
+    * extracting its delegate.
+    *
+    * @param v ScalaFX $KF
+    * @return JavaFX $KF extracted from `v`.
+    */
   implicit def sfxKeyFrame2jfx(v: KeyFrame): jfxa.KeyFrame = if (v != null) v.delegate else null
 
+  private def toJFXEventHandler[R](handler: ActionEvent => R): jfxe.EventHandler[jfxe.ActionEvent] =
+    new jfxe.EventHandler[jfxe.ActionEvent] {
+      override def handle(event: jfxe.ActionEvent): Unit = handler(new ActionEvent(event))
+
+    }
+
   /**
-   * Creates a new $KF instance
-   *
-   * @param time the time
-   * @param name the Name. Default Value: `null`.
-   * @param onFinished the onFinished-handler. Default Value: `null`.
-   * @param values a `Set` of [[scalafx.animation.KeyValue]] instances. Default Value: empty Set.
-   * @return A new $KF
-   */
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    */
+  def apply(time: Duration): KeyFrame = {
+    new KeyFrame(new jfxa.KeyFrame(time))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param values a `Set` of [[scalafx.animation.KeyValue]] instances.
+    */
   def apply(time: Duration,
-            name: String = null,
-            onFinished: jfxe.EventHandler[jfxe.ActionEvent] = null,
-            values: Set[_ <: KeyValue[_, _]] = Set.empty) = {
+            values: Set[_ <: KeyValue[_, _]]): KeyFrame = {
+    val mappedValues: Seq[jfxa.KeyValue] = values.map((x: KeyValue[_, _]) => x.delegate).toSeq
+    new KeyFrame(new jfxa.KeyFrame(time, mappedValues: _*))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param name the name.
+    */
+  def apply(time: Duration,
+            name: String): KeyFrame = {
+    new KeyFrame(new jfxa.KeyFrame(time, name))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param name the name.
+    * @param values a `Set` of [[scalafx.animation.KeyValue]] instances.
+    */
+  def apply(time: Duration,
+            name: String,
+            values: Set[_ <: KeyValue[_, _]]): KeyFrame = {
+    val mappedValues: Seq[jfxa.KeyValue] = values.map((x: KeyValue[_, _]) => x.delegate).toSeq
+    new KeyFrame(new jfxa.KeyFrame(time, name, mappedValues: _*))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param onFinished the onFinished-handler.
+    */
+  def apply(time: Duration,
+            onFinished: jfxe.EventHandler[jfxe.ActionEvent]): KeyFrame = {
+    new KeyFrame(new jfxa.KeyFrame(time, onFinished))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param onFinished the onFinished-handler.
+    * @param values a `Set` of [[scalafx.animation.KeyValue]] instances.
+    */
+  def apply(time: Duration,
+            onFinished: jfxe.EventHandler[jfxe.ActionEvent],
+            values: Set[_ <: KeyValue[_, _]]): KeyFrame = {
+    val mappedValues: Seq[jfxa.KeyValue] = values.map((x: KeyValue[_, _]) => x.delegate).toSeq
+    new KeyFrame(new jfxa.KeyFrame(time, onFinished, mappedValues: _*))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param onFinished the onFinished-handler.
+    */
+  def apply[R](time: Duration,
+               onFinished: ActionEvent => R): KeyFrame = {
+    new KeyFrame(new jfxa.KeyFrame(time, toJFXEventHandler(onFinished)))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param onFinished the onFinished-handler.
+    */
+  def apply[R](time: Duration,
+               onFinished: ActionEvent => R,
+               values: Set[_ <: KeyValue[_, _]]): KeyFrame = {
+    val mappedValues: Seq[jfxa.KeyValue] = values.map((x: KeyValue[_, _]) => x.delegate).toSeq
+    new KeyFrame(new jfxa.KeyFrame(time, toJFXEventHandler(onFinished), mappedValues: _*))
+  }
+
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param name the name.
+    * @param onFinished the onFinished-handler.
+    */
+  def apply(time: Duration,
+            name: String,
+            onFinished: jfxe.EventHandler[jfxe.ActionEvent]): KeyFrame = {
+    new KeyFrame(new jfxa.KeyFrame(time, name, onFinished))
+  }
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param name the name.
+    * @param onFinished the onFinished-handler.
+    * @param values a `Set` of [[scalafx.animation.KeyValue]] instances.
+    */
+  def apply(time: Duration,
+            name: String,
+            onFinished: jfxe.EventHandler[jfxe.ActionEvent],
+            values: Set[_ <: KeyValue[_, _]]): KeyFrame = {
     val mappedValues: Set[jfxa.KeyValue] = values.map((x: KeyValue[_, _]) => x.delegate)
     new KeyFrame(new jfxa.KeyFrame(time, name, onFinished, mappedValues))
   }
 
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param name the name.
+    * @param onFinished the onFinished-handler.
+    */
+  def apply[R](time: Duration,
+               name: String,
+               onFinished: ActionEvent => R): KeyFrame = {
+    new KeyFrame(new jfxa.KeyFrame(time, name, toJFXEventHandler(onFinished)))
+  }
+
+
+  /**
+    * Creates a new $KF instance
+    *
+    * @param time the time
+    * @param name the name.
+    * @param onFinished the onFinished-handler.
+    * @param values a `Set` of [[scalafx.animation.KeyValue]] instances.
+    */
+  def apply[R](time: Duration,
+               name: String,
+               onFinished: ActionEvent => R,
+               values: Set[_ <: KeyValue[_, _]]): KeyFrame = {
+    val mappedValues: Set[jfxa.KeyValue] = values.map((x: KeyValue[_, _]) => x.delegate)
+    new KeyFrame(new jfxa.KeyFrame(time, name, toJFXEventHandler(onFinished), mappedValues))
+  }
 }
 
 /**
- * Wraps a [[http://docs.oracle.com/javase/8/javafx/api/javafx/animation/KeyFrame.html $KF]].
- *
- * @constructor Creates a new ScalaFX $KF from a JavaFX $KF.
- * @param delegate JavaFX $KF to be delegated.
- *
- * @define KF `KeyFrame`
- */
+  * Wraps a [[http://docs.oracle.com/javase/8/javafx/api/javafx/animation/KeyFrame.html $KF]].
+  *
+  * @constructor Creates a new ScalaFX $KF from a JavaFX $KF.
+  * @param delegate JavaFX $KF to be delegated.
+  *
+  * @define KF `KeyFrame`
+  */
 class KeyFrame(override val delegate: jfxa.KeyFrame)
   extends SFXDelegate[jfxa.KeyFrame] {
 
   /**
-   * Returns the time offset of this $KF.
-   */
+    * Returns the time offset of this $KF.
+    */
   def time = new Duration(delegate.getTime)
 
   /**
-   * Returns the name of this $KF.
-   */
+    * Returns the name of this $KF.
+    */
   def name = delegate.getName
 
   /**
-   * Returns the onFinished event handler of this $KF.
-   */
+    * Returns the onFinished event handler of this $KF.
+    */
   def onFinished = delegate.getOnFinished
 
   /**
-   * Returns an immutable Set of [[http://docs.oracle.com/javase/8/javafx/api/javafx/animation/KeyValue.html `KeyValue`]]
-   * instances.
-   */
+    * Returns an immutable Set of [[http://docs.oracle.com/javase/8/javafx/api/javafx/animation/KeyValue.html `KeyValue`]]
+    * instances.
+    */
   def values = delegate.getValues
 
 }

@@ -120,8 +120,8 @@ object IncompleteClickHandler extends JFXApp {
               }
             },
             new Button {
-              text = "Button 6: New fine approach using `handle {}`"
-              onAction = handle {
+              text = "Button 6: New fine approach using lambda without explicit type for input argument"
+              onAction = ae => {
                 println("Button 6 - Message 1")
                 println("Button 6 - Message 2")
               }
